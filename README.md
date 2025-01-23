@@ -94,4 +94,4 @@ Para ejecutar el notebook, simplemente abre `Circular Line Chart.ipynb` en Jupyt
 
 ## 📃 Licencia
 
-Este proyecto está bajo la licencia MIT. Consulta el archivo LICENSE para más detalles.
+Este proyecto está bajo la licencia Apache License. Consulta el archivo LICENSE para más detalles.
