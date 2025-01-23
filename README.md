@@ -1,63 +1,97 @@
-# Circular Line Chart
+# 📊 Circular Line Chart
 
-[![Licencia](https://img.shields.io/badge/Licencia-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Versión](https://img.shields.io/badge/Versión-1.0.0-green.svg)](https://semver.org/)
+Este proyecto contiene un gráfico de líneas circular que compara la línea base del proyecto con los finales mensuales. Utiliza Python y varias bibliotecas como pandas, numpy y matplotlib para generar un gráfico visualmente atractivo y fácil de interpretar.
 
-**Descripción breve y concisa del proyecto.**
+## 🚀 Descripción
 
-## Tabla de Contenidos
+El gráfico de líneas circular es una herramienta útil para visualizar la evolución de un proyecto a lo largo del tiempo. Este enfoque permite ver claramente las diferencias entre las fechas planificadas y las fechas reales de finalización de las actividades.
 
-- [Descripción](#descripción)
-- [Instalación](#instalación)
-- [Uso](#uso)
-- [Ejemplos](#ejemplos)
-- [Contribución](#contribución)
-- [Licencia](#licencia)
-- [Contacto](#contacto)
+## 📑 Contenido del Notebook
 
-## Descripción
+El archivo `Circular Line Chart.ipynb` incluye el siguiente contenido:
 
-Descripción detallada del proyecto. 
-* ¿Qué problema resuelve?
-* ¿Cuáles son sus características principales?
-* ¿Qué tecnologías utiliza?
+1. **Importación de Bibliotecas** 📦
+   ```python
+   import pandas as pd
+   import numpy as np
+   import matplotlib.pyplot as plt
+   ```
 
-## Instalación
+2. **Lectura del Archivo Excel** 📥
+   ```python
+   df = pd.read_excel('GPT - Circular Line Chart.xlsx')
+   ```
 
-Instrucciones paso a paso sobre cómo instalar el proyecto.
-* Dependencias necesarias
-* Comandos para clonar el repositorio
-* Configuración del entorno
+3. **Conversión de Columnas de Fechas** 📅
+   ```python
+   date_columns = ['Project Baseline Finish', 'M-1 Finish', 'M-2 Finish', 'M-3 Finish', 'Current Finish']
+   for col in date_columns:
+       df[col] = pd.to_datetime(df[col])
+   ```
 
-## Uso
+4. **Ordenación del DataFrame** 📊
+   ```python
+   df = df.sort_values('Project Baseline Finish').reset_index(drop=True)
+   ```
 
-Explicación de cómo usar el proyecto.
-* Comandos básicos
-* Ejemplos de uso
-* Casos de uso comunes
+5. **Normalización de Fechas a una Escala Radial** 🌀
+   ```python
+   def normalize_dates(dates, start_date):
+       return [(date - start_date).days / 365.25 for date in dates]
+   ```
 
-## Ejemplos
+6. **Configuración y Creación del Gráfico** 🎨
+   ```python
+   plt.figure(figsize=(12, 12), dpi=100)
+   ax = plt.subplot(111, polar=True)
+   ax.set_theta_offset(np.pi / 2)
+   ax.set_theta_direction(-1)
+   ```
 
-Proporciona ejemplos concretos de cómo usar el proyecto.
-* Código de ejemplo
-* Capturas de pantalla* Demostraciones en vídeo (si corresponde)
+7. **Añadir Anillos para Cada Año y Etiquetas** 🔄
+   ```python
+   for year in range(2023, 2030):
+       ring_radius = year - 2023
+       ax.plot(np.linspace(0, 2 * np.pi, 100), [ring_radius] * 100, linestyle='--', color='grey', linewidth=1, alpha=0.6)
+       if ring_radius >= 0:
+           ax.text(0, ring_radius, str(year), ha='center', va='bottom', fontsize=10, color='black')
+   ```
 
-## Contribución
+8. **Añadir la Circunferencia para el Día de Hoy** 📅
+   ```python
+   today = pd.Timestamp('today').normalize()
+   today_radial = normalize_dates([today], start_date)[0]
+   ax.plot(np.linspace(0, 2 * np.pi, 500), [today_radial]*len(theta), linestyle='--', color='red', linewidth=1, label='Today')
+   ```
 
-Describe cómo otros pueden contribuir al proyecto.
-* Guía de estilo de código
-* Proceso para enviar pull requests
-* Información sobre el sistema de seguimiento de errores
+9. **Agregar Leyenda y Título** 🏷️
+   ```python
+   plt.legend(loc='lower right', fontsize=10)
+   plt.title('Circular Line Chart: Project Baseline vs Monthly Finishes', va='bottom')
+   ```
 
-## Licencia
+10. **Guardar y Mostrar el Gráfico** 💾
+    ```python
+    plt.savefig('Circular_Line_Chart.png', format='png', transparent=True)
+    plt.show()
+    ```
 
-Especifica la licencia del proyecto.
-* Enlace al texto de la licencia
-* Información sobre el copyright
+## 🛠️ Requisitos
 
-## Contacto
+Para ejecutar el notebook, necesitas tener instaladas las siguientes bibliotecas:
+- pandas
+- numpy
+- matplotlib
 
-Información de contacto del autor o mantenedor del proyecto.
-* Nombre
-* Correo electrónico
-* Enlaces a perfiles en redes sociales (opcional)
+Puedes instalarlas usando pip:
+```sh
+pip install pandas numpy matplotlib
+```
+
+## 📈 Ejecución
+
+Para ejecutar el notebook, simplemente abre `Circular Line Chart.ipynb` en Jupyter Notebook o JupyterLab y ejecuta las celdas.
+
+## 📃 Licencia
+
+Este proyecto está bajo la licencia MIT. Consulta el archivo LICENSE para más detalles.
