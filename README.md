@@ -1,54 +1,45 @@
 # 📊 Circular Line Chart
+This project contains a circular line chart comparing the project baseline with monthly finishes. It uses Python libraries including pandas, numpy, and matplotlib to generate a visually appealing and easy-to-interpret chart.
 
-Este proyecto contiene un gráfico de líneas circular que compara la línea base del proyecto con los finales mensuales. Utiliza Python y varias bibliotecas como pandas, numpy y matplotlib para generar un gráfico visualmente atractivo y fácil de interpretar.
+## 🚀 Description
+The circular line chart visualizes project evolution over time, clearly showing differences between planned and actual activity completion dates.
 
-## 🚀 Descripción
+## 📑 Notebook Contents
+The `Circular Line Chart.ipynb` file includes:
 
-El gráfico de líneas circular es una herramienta útil para visualizar la evolución de un proyecto a lo largo del tiempo. Este enfoque permite ver claramente las diferencias entre las fechas planificadas y las fechas reales de finalización de las actividades.
-
-## 📑 Contenido del Notebook
-
-El archivo `Circular Line Chart.ipynb` incluye el siguiente contenido:
-
-1. **Importación de Bibliotecas** 📦
+1. **Library Imports** 📦
    ```python
    import pandas as pd
    import numpy as np
    import matplotlib.pyplot as plt
    ```
-
-2. **Lectura del Archivo Excel** 📥
+2. **Excel File Reading** 📥
    ```python
    df = pd.read_excel('GPT - Circular Line Chart.xlsx')
    ```
-
-3. **Conversión de Columnas de Fechas** 📅
+3. **Date Column Conversion** 📅
    ```python
    date_columns = ['Project Baseline Finish', 'M-1 Finish', 'M-2 Finish', 'M-3 Finish', 'Current Finish']
    for col in date_columns:
        df[col] = pd.to_datetime(df[col])
    ```
-
-4. **Ordenación del DataFrame** 📊
+4. **DataFrame Sorting** 📊
    ```python
    df = df.sort_values('Project Baseline Finish').reset_index(drop=True)
    ```
-
-5. **Normalización de Fechas a una Escala Radial** 🌀
+5. **Date Normalization to Radial Scale** 🌀
    ```python
    def normalize_dates(dates, start_date):
        return [(date - start_date).days / 365.25 for date in dates]
    ```
-
-6. **Configuración y Creación del Gráfico** 🎨
+6. **Chart Setup and Creation** 🎨
    ```python
    plt.figure(figsize=(12, 12), dpi=100)
    ax = plt.subplot(111, polar=True)
    ax.set_theta_offset(np.pi / 2)
    ax.set_theta_direction(-1)
    ```
-
-7. **Añadir Anillos para Cada Año y Etiquetas** 🔄
+7. **Adding Year Rings and Labels** 🔄
    ```python
    for year in range(2023, 2030):
        ring_radius = year - 2023
@@ -56,42 +47,36 @@ El archivo `Circular Line Chart.ipynb` incluye el siguiente contenido:
        if ring_radius >= 0:
            ax.text(0, ring_radius, str(year), ha='center', va='bottom', fontsize=10, color='black')
    ```
-
-8. **Añadir la Circunferencia para el Día de Hoy** 📅
+8. **Adding Today's Circle** 📅
    ```python
    today = pd.Timestamp('today').normalize()
    today_radial = normalize_dates([today], start_date)[0]
    ax.plot(np.linspace(0, 2 * np.pi, 500), [today_radial]*len(theta), linestyle='--', color='red', linewidth=1, label='Today')
    ```
-
-9. **Agregar Leyenda y Título** 🏷️
+9. **Adding Legend and Title** 🏷️
    ```python
    plt.legend(loc='lower right', fontsize=10)
    plt.title('Circular Line Chart: Project Baseline vs Monthly Finishes', va='bottom')
    ```
-
-10. **Guardar y Mostrar el Gráfico** 💾
+10. **Saving and Displaying Chart** 💾
     ```python
     plt.savefig('Circular_Line_Chart.png', format='png', transparent=True)
     plt.show()
     ```
 
-## 🛠️ Requisitos
-
-Para ejecutar el notebook, necesitas tener instaladas las siguientes bibliotecas:
+## 🛠️ Requirements
+Required libraries:
 - pandas
 - numpy
 - matplotlib
 
-Puedes instalarlas usando pip:
+Install via pip:
 ```sh
 pip install pandas numpy matplotlib
 ```
 
-## 📈 Ejecución
+## 📈 Execution
+Open `Circular Line Chart.ipynb` in Jupyter Notebook or JupyterLab and run the cells.
 
-Para ejecutar el notebook, simplemente abre `Circular Line Chart.ipynb` en Jupyter Notebook o JupyterLab y ejecuta las celdas.
-
-## 📃 Licencia
-
-Este proyecto está bajo la licencia Apache License. Consulta el archivo LICENSE para más detalles.
+## 📃 License
+This project is under the Apache License. See LICENSE file for details.
